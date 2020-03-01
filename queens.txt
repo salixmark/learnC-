@@ -1,0 +1,43 @@
+#include<iostream>
+using namespace std;
+int a[9][9],i,j,sum=1;
+int main(){
+	char c;
+	while(sum<9)
+	{
+		cin>>c;
+		if(c>='1'&&c<='8')
+		{
+			for(j=c-'0',i=1;i<=8;i++)
+				a[i][j]++;
+			for(i=sum,j=1;j<=8;j++)
+				a[i][j]++;
+			for(i=sum,j=c-'0';j>=1&&j<=8&&i>=1&&i<=8;j++,i--)
+				a[i][j]++;
+			for(i=sum,j=c-'0';j>=1&&j<=8&&i>=1&&i<=8;j--,i--)
+				a[i][j]++;
+			for(i=sum,j=c-'0';j>=1&&j<=8&&i>=1&&i<=8;j++,i++)
+				a[i][j]++;
+			for(i=sum,j=c-'0';j>=1&&j<=8&&i>=1&&i<=8;j--,i++)
+				a[i][j]++;
+		}
+		sum++;
+	}
+	for(i=1;i<=8;i++)
+		for(j=1;j<=8;j++)
+		{
+			if(a[i][j]==0)
+			{
+				cout<<j;
+				return 0;
+		}}
+	cout<<"No Answer";
+	return 0;
+}
+
+
+
+
+
+
+
