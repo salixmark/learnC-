@@ -1,0 +1,29 @@
+buy water
+题目描述：小明有n元，一元能买一瓶水，两个空瓶换一瓶水，三个瓶盖换一瓶，求最多可以换几瓶水
+（递归思想）
+#include<iostream>
+using namespace std;
+int water,bottle,cap;
+int sum(int cha)
+{
+	water+=cha;//水增加
+	bottle+=cha;//瓶增加
+	cap+=cha;//盖增加
+	cha=cap/3+bottle/2;//增加量减去已经换成水的（更新）
+	cap%=3;//盖去掉已经用掉的（换成水了）
+	bottle%=2;//瓶同上
+	if(cha<1)//没有水可换就结束
+		return water;
+	else//否则继续
+		return sum(cha);
+}
+int main()
+{
+	int a;
+	cin>>a;
+	cout<<sum(a);
+	return 0;
+}
+
+
+

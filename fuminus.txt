@@ -1,0 +1,18 @@
+fu minus
+
+#include<iostream>
+#include<iomanip>
+using namespace std;
+float min(float a,float b)
+{
+	return a-b;
+}
+int main()
+{
+	float a,b,c,d;
+	cin>>a>>b>>c>>d;
+	a=min(a,c);
+	c=min(b,d);
+	cout<<fixed<<setprecision(2)<<a<<' '<<c;
+	return 0;
+}

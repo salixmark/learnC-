@@ -1,0 +1,59 @@
+least length
+#include<iostream>
+#include<math.h>
+using namespace std;
+char a[10],b[10];
+void px(char a[],int m)
+{
+	int i,j;
+	char k;
+	for(i=0;i<m;i++)
+		for(j=i+1;a[j]!=0;j++)
+		{
+			if(a[i]>a[j])
+			{
+				k=a[i];
+				a[i]=a[j];
+				a[j]=k;
+			}
+		}
+}
+int js(char x[])
+{
+	int i=0;
+	cin>>x;
+	while(x[i])
+	{
+		if(x[i]>='A'&&x[i]<='Z')
+			x[i]=x[i]+'a'-'A';
+		i++;
+	}
+	return i;
+}
+int main()
+{
+	int n,m,i,j,min=100,cha;
+	m=js(a);
+	n=js(b);
+	px(a,m);
+	px(b,n);
+	for(i=0;i<m;i++)
+	{
+		for(j=0;j<n;j++)
+		{
+			cha=abs(a[i]-b[j]);
+			if(cha<min)
+				min=cha;
+			if(min==0)
+			{
+				cout<<"0";
+				return 0;
+			}
+		}
+	}
+	cout<<min;
+	return 0;
+}
+	
+	
+
