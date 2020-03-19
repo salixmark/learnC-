@@ -1,0 +1,50 @@
+
+oilbuket
+某工厂使用一种圆柱形的铁桶来运输色拉油，但是关于该油桶的容量已经模糊，现在工人们测得了油桶直径和高（由键盘输入），请帮工人们计算一下油桶容量和制造该油桶需要的铁皮面积。
+
+注意这个油桶是有盖的。铁皮的厚度忽略不计。
+#include<iostream>
+#include<iomanip>
+using namespace std;
+const  double  PI=3.1415926; //定义常量PI 方便调用
+class cylinder//类定义 注意全部double型 不然数据过不了
+{
+    public: double getvolumn();//计算体积
+			double getarea();//计算表面积
+			cylinder(double newr,double newh);//构造函数
+	        ~cylinder();//析构函数
+	private:double r,h;
+};
+double cylinder::getvolumn()
+{
+	return PI*r*r*h;//返回体积
+}
+double cylinder::getarea()
+{
+	return PI*r*r*2+2*PI*r*h;//返回面积
+}
+cylinder::cylinder(double newh,double newr)
+{
+	r=newr;
+	h=newh;
+	cout<<"构造函数被调用"<<endl;
+}
+cylinder::~cylinder()
+{
+	cout<<"析构函数被调用"<<endl;
+}
+int main()
+{
+    double d,h;
+
+    cin>>d>>h;
+
+    cylinder can(h,d/2);//输入并且初始化私有成员
+
+    cout<<fixed<<setprecision(6);
+
+    cout<<"油桶的容积是"<<can.getvolumn()<<" "<<endl;
+
+    cout<<"铁皮的面积是"<<can.getarea()<<endl;
+	return 0;
+}
