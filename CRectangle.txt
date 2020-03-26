@@ -1,0 +1,115 @@
+CRectangle
+首先是题目
+**【问题描述】**
+设计一个CRectangle类，其中包括CPoint类的两个对象成员，表示左上角和右下角的两个点。要求求解矩形的面积。
+注意，每个类的构造函数、拷贝构造函数需要输出“*** is called”,具体的请根据输出进行分析。
+main函数已经给定如下。（略）
+
+然后是代码
+
+```cpp
+#include <iostream> 
+using  namespace  std; 
+class CPoint//定义记录坐标点的类
+{
+public:CPoint(int nx=0,int ny=0);
+//一开始我还定义了CPoint()，然后编译错误，后来知道原因是和上面一个函数功能重合，*因为已经设置了默认值，所以上面的函数也可不给参数*，修复一个知识漏洞
+	       CPoint(CPoint &z);//定义拷贝构造函数
+	       friend class CRectangle;//友元声明，不然下面不能调用CPoint的私有成员
+private: int x,y;//x，y表示坐标
+};
+CPoint::CPoint(int nx,int ny)//有参则赋值
+{
+	x=nx;
+	y=ny;
+	cout<<"CPoint contstructor with default value(0,0) is called."<<endl;
+}
+CPoint::CPoint(CPoint &z)//拷贝构造函数
+{
+	x=z.x;
+	y=z.y;
+	cout<<"CPoint copy contstructor is called."<<endl;
+}
+```
+
+```cpp
+class CRectangle//记录矩形参数的类
+{
+public:CRectangle();
+	      CRectangle(CPoint p1,CPoint p2);//这里使用CPoint类的数据，赋初值
+	      CRectangle(int na,int nb,int nc,int nd);//这里使用main中定义的数据，赋初值
+	      CRectangle(CRectangle &z);//这里调用拷贝构造函数
+	      int GetArea();//输出面积
+private:CPoint a,b;//定义CPoint类的对象成员
+};
+int CRectangle::GetArea()
+{
+	return (b.x-a.x)*(b.y-a.y);//直接调用参数计算
+}
+CRectangle::CRectangle():a(0),b(0)//无参就用(0)或者()初始化对象
+{
+	cout<<"CRectangle default contstructor is called."<<endl;
+}
+CRectangle::CRectangle(CPoint p1,CPoint p2):a(p1),b(p2)//依然是初始化对象，这次学到了可以用类的对象来初始化（老师没讲过，没有参考书，还是靠大佬和百度）
+{
+	cout<<"CRectangle contstructor with (CPoint,CPoint) is called."<<endl;
+}
+CRectangle::CRectangle(int na,int nb,int nc,int nd):a(na,nb),b(nc,nd)
+//初始化，没想到这样也可以
+{
+	cout<<"CRectangle contstructor with (int,int,int,int) is called."<<endl;
+}
+CRectangle::CRectangle(CRectangle &z):a(z.a),b(z.b)
+//这样的初始化竟然也可以，学到了
+{
+	cout<<"CRectangle copy contstructor is called."<<endl;
+}
+```
+
+```cpp
+int main()
+
+{
+
+    int a=1, b=1, c=6, d=11;
+
+    cout<<"# Define p1 ######"<<endl;
+
+    CPoint p1;
+
+    cout<<"# Define p2 ######"<<endl;
+
+    CPoint p2(10,20);
+
+    cout<<"# Define rect1 ######"<<endl;
+
+    CRectangle rect1;
+
+    cout<<"# Define rect2 ######"<<endl;
+
+    CRectangle rect2(p1, p2);
+
+    cout<<"# Define rect3 ######"<<endl;
+
+    CRectangle rect3(a, b, c, d);
+
+    cout<<"# Define rect4 ######"<<endl;
+
+    CRectangle rect4(rect2);
+
+    cout<<"# Calculate area ######"<<endl;
+
+    cout << "rect1面积为" << rect1.GetArea() << endl;
+
+    cout << "rect2面积为" << rect2.GetArea() << endl;
+
+    cout << "rect3面积为" << rect3.GetArea() << endl;
+
+    cout << "rect4面积为" << rect4.GetArea() << endl;
+
+    system("pause");
+
+    return 0;
+
+}
+```
