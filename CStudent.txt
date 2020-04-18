@@ -1,0 +1,57 @@
+CStudent
+#include  <iostream> 
+#include  <string> 
+using  namespace  std; 
+
+class  CStudent 
+{ 
+private: string name;
+         int age;
+public: static int count;
+        void printname();
+        static int getcount();
+        CStudent(string nname="noname", int nage=0);
+        ~CStudent();
+};
+int CStudent::count=0;
+void CStudent::printname()
+{
+	cout<<"name:"<<name<<endl;
+}
+CStudent::CStudent(string nname, int nage)
+{
+	name=nname;
+	age=nage;
+	count++;
+	cout<<name<<" is contructing"<<endl;
+}
+int CStudent::getcount()
+{
+	return count;
+}
+CStudent::~CStudent()
+{
+	cout<<name<<" is destructing"<<endl;
+	count--;
+}
+int  main() 
+{ 
+        cout  <<  "现在有学生"  <<  CStudent::getcount()  <<  endl; 
+        { 
+                CStudent  stuB[5]; 
+                stuB[4].printname(); 
+                cout  <<  "现在有学生"  <<  CStudent::getcount()  <<  endl; 
+        } 
+        cout  <<  "现在有学生"  <<  CStudent::getcount()  <<  endl; 
+        { 
+                CStudent  stuA[2]  =  {CStudent("Tom",  3),  CStudent("Jerry",  2)}; 
+                for  (int  i  =  0;  i  <  2;  i++) 
+                { 
+                        stuA[i].printname(); 
+                } 
+                cout  <<  "现在有学生"  <<  CStudent::getcount()  <<  endl; 
+        } 
+        cout  <<  "现在有学生"  <<  CStudent::getcount()  <<  endl; 
+
+        return  0; 
+}

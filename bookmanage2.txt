@@ -1,0 +1,244 @@
+
+bookmanage2
+首先是题目
+**【问题描述】**
+请设计一个程序实现图书库存的管理。请根据给定的main函数及程序输出，完成设计。具体要求如下。
+一、请设计一个Book类（与动态数组类的要求一致）：
+1、包括私有成员：
+    unsigned int m_ID;//编号
+    string m_Name;//书名
+    string m_Introductio//简介
+    string m_Author;//作者
+    string m_Date;//日期
+    unsigned int m_Page;//页数
+2、设计所有成员变量的getter和setter函数，关于getter和setter，我们在多文件视频课程中已经进行了介绍，同学们也可以百度了解。
+3、设计构造与析构函数，不要求输出信息，但各位同学可以自己输出并分析各个对象的创建与删除的情况：
+Book();//将m_ID初始化为0，表示这个一个未赋值对象
+    virtual ~Book();//无具体的工作
+    Book(const Book& other);//实现所有成员变量的拷贝
+    下面是Book类的定义和实现（之前一篇博客里面写过了一样的，但是本着面向对象的原则（笑），在下方再打一次）
+```cpp
+    class Book
+ {
+        unsigned int m_ID;//编号
+        string m_Name;//书名
+        string m_Introduction;//简介
+        string m_Author;//作者
+        string m_Date;//日期
+        unsigned int m_Page;//页数
+    public://下方为所有私有成员的getter和setter函数，因为很简单，所以就直接写了
+         int GetID() { return m_ID; }
+         void SetID(unsigned int id) { m_ID = id; }
+         string GetName() { return m_Name; }
+         void SetName(string name) { m_Name = name; }
+         string GetIntroduction() { return m_Introductio; }
+         void SetIntroduction(string intro) { m_Introductio = intro; }
+         string GetAuthor() { return m_Author; }
+         void  SetAuthor(string auth) { m_Author = auth; }
+         string GetDate() { return m_Date; }
+         void SetDate(string date) { m_Date = date; }
+         int GetPage() { return m_Page; }
+         void SetPage(unsigned int page) { m_Page = page; }
+         Book() { m_ID = 0; }//构造函数，根据题目m_ID为0
+         ~Book();//析构函数
+         Book(const Book& other);//拷贝构造函数
+         friend class Store;//友元，不然后面无法调用Book类的私有成员
+ };
+Book::~Book()//析构函数需要实现部分！
+{
+
+}
+Book::Book(const Book& other)//拷贝构造，本来是可以不用写的，系统会调用默认的拷贝构造，但是题目要求，只能写了
+{
+    m_ID = other.m_ID;
+    m_Name = other.m_Name;
+    m_Introductio = other.m_Introductio;
+    m_Author = other.m_Author;
+    m_Date = other.m_Date;
+    m_Page = other.m_Page;
+}
+```
+    
+二、请设计一个Store类,这是一个基于vector实现的类，用于实现图书的管理：
+1、包括私有成员：
+    m_Books;//利用vector动态创建的Book数组
+2、设计 unsigned int GetCount()函数，返回m_Books中存储的Book对象的个数。
+3、设计构造与析构函数，因为vector能够实现存储空间的动态管理，因此此处的设计明显比动态数组类简单。
+   1） Store();
+   输出"Store default constructor called!"
+   2）Store(int n);
+   将m_Books的大小置为n;并输出"Store constructor with (int n) called!";
+   3）virtual ~Store();
+   输出"Store destructor called!";
+   4）Store(const Store& other);
+   实现对象数组的拷贝，并输出"Store copy constructor called!";vector已经解决了深拷贝的问题，这里无需做深拷贝设计。
+4、设计入库操作
+   入库操作的主要功能是在数组中添加一本新书。
+   函数声明为：void in(Book &b)
+   提示：利用vector的成员函数可以直接实现添加元素功能
+5、设计出库操作
+   出库操作的主要功能是根据指定的书名，在数组中删除这本书。
+   函数声明为：void out(string name)
+   提示：利用vector的成员函数可以直接实现删除元素功能
+6、根据ID查找图书
+   要求根据给定的ID查找图书，如果找到，则返回一个Book对象，Book对象中存储了对应书本的信息；如果找不到，则返回一个Book对象，Book对象的m_ID为0，表示未被初始化。
+   函数声明为：Book findbyID(int ID)
+   提示：vector中的元素遍历可以使用迭代器
+7、根据name查找图书
+   要求根据给定的书名查找图书，如果找到，则返回一个Book对象，Book对象中存储了对应书本的信息；如果找不到，则返回一个Book对象，Book对象的m_ID为0，表示未被初始化。
+   函数声明为：Book findbyName(string name)
+   提示：vector中的元素遍历可以使用迭代器
+8、设计一个函数打印所有的图书的信息
+   函数声明为：void printList()
+   下面是Store类的定义和实现
+
+```cpp
+   class  Store
+{
+    vector<Book>  m_Books;//利用vector动态创建的Book数组
+public:
+    unsigned int GetCount() { return m_Books.size(); }//返回m_Books中存储的Book对象的个数
+    Store();//无参构造函数
+    Store(int n);//含参构造
+    ~Store();//析构函数
+    Store(const Store& other);//拷贝构造
+    void in(Book& b);//入库
+    void out(string name);//出库
+    Book findbyID(int ID);//按ID查找
+    Book findbyName(string name);//按书名查找
+    void printList();//打印库中图书
+};
+Store::Store()
+{
+    cout << "Store default constructor called!" << endl;
+}//输出"Store default constructor called!"
+Store::Store(int n)
+{
+    vector<Book> m_Books(n);//当新元素插入时候，这个数组需要被重新分配大小为了增加存储空间
+    cout << "Store constructor with (int n) called!" << endl;
+}// 将m_Books的大小置为n;并输出"Store constructor with (int n) called!"
+Store::~Store()
+{
+    cout << "Store destructor called!" << endl;
+}// 输出"Store destructor called!"
+Store::Store(const Store& other)
+{
+    for (int i = 0; i < m_Books.size(); i++)
+    {
+        m_Books[i] = other.m_Books[i];
+    }
+    cout << "Store copy constructor called!" << endl;
+}//实现对象数组的拷贝，并输出"Store copy constructor called!";vector已经解决了深拷贝的问题，这里无需做深拷贝设计
+void Store::in(Book& b)
+{
+    m_Books.push_back(b);//.push_back(同类型量);作用是在vector的末尾插入新元素；
+}//利用vector的成员函数可以直接实现添加元素功能
+void Store::out(string name)
+{
+    int c = 0, j;
+    for (int i = 0; i < m_Books.size(); i++)
+    {
+        if (m_Books[i].m_Name == name)
+        {
+            m_Books.erase(m_Books.begin() + i);//.erase（）删除指定位置元素。（其中的参数要是指针变量，比如begain(),end(),以及迭代器值），例如vec.erase(vec.begin()+2);删除第3个元素
+        }
+    }
+}//利用vector的成员函数可以直接实现删除元素功能
+Book Store::findbyID(int ID)
+{
+    for (int i = 0; i < m_Books.size(); i++)
+    {
+        if (m_Books[i].m_ID == ID)
+            return m_Books[i];
+    }
+    Book k;
+    return k;
+}//根据给定的ID查找图书，如果找到，则返回一个Book对象，Book对象中存储了对应书本的信息；如果找不到，则返回一个Book对象，Book对象的m_ID为0，表示未被初始化
+Book Store::findbyName(string name)
+{
+    for (int i = 0; i < m_Books.size(); i++)
+    {
+        if (m_Books[i].m_Name == name)
+            return m_Books[i];
+    }
+    Book k;
+    return k;
+}//根据给定的书名查找图书，如果找到，则返回一个Book对象，Book对象中存储了对应书本的信息；如果找不到，则返回一个Book对象，Book对象的m_ID为0，表示未被初始化
+void Store::printList()
+{
+    cout << "There are totally " << m_Books.size() << " Books:" << endl;
+    for (int i = 0; i < m_Books.size(); i++)
+        cout << "ID=" << m_Books[i].m_ID << ";  Name:" << m_Books[i].m_Name << ";  Author:" << m_Books[i].m_Author << ";  Date:" << m_Books[i].m_Date << ";" << endl;
+}//打印所有的图书的信息
+```
+然后是main函数和头文件
+
+```cpp
+#include  <iostream>
+#include  <vector>
+using  namespace  std;
+int  main()
+{
+    Store  s;
+    Book  b1, b2, b3;
+    b1.SetID(1);
+    b1.SetName("C++  语言程序设计(第4版)");
+    b1.SetAuthor("郑莉");
+    b1.SetIntroduction("介绍C++及面向对象的知识");
+    b1.SetDate("201007");
+    b1.SetPage(529);
+    b2.SetID(2);
+    b2.SetName("离散数学");
+    b2.SetAuthor("左孝凌");
+    b2.SetIntroduction("介绍命题逻辑、谓词逻辑、集合论、代数系统和图论");
+    b2.SetDate("198209");
+    b2.SetPage(305);
+    b3.SetID(3);
+    b3.SetName("c程序设计");
+    b3.SetAuthor("谭浩强");
+    b3.SetIntroduction("介绍C程序设计中的基本知识，如语句格式、语法等");
+    b3.SetDate("201006");
+    b3.SetPage(355);
+
+    cout << "第一本书入库" << endl;
+    s.in(b1);
+    cout << "第二本书入库" << endl;
+    s.in(b2);
+    cout << "第三本书入库" << endl;
+    s.in(b3);
+    cout << "现有库存书籍数量：" << s.GetCount() << endl;
+    cout << "查找并出库图书：离散数学" << endl;
+    Book  tmpbook = s.findbyName("离散数学");
+    if (tmpbook.GetID() != 0)
+    {
+        s.out("离散数学");
+        cout << "离散数学  已成功出库" << endl;
+    }
+    else
+        cout << "没有找到name为离散数学的书" << endl;
+    cout << "现有库存书籍数量：" << s.GetCount() << endl;
+
+    cout << "查找图书  ID：3" << endl;
+    tmpbook = s.findbyID(3);
+    if (tmpbook.GetID() != 0)
+        cout << "找到ID为" << 3 << "的书，书名：" << tmpbook.GetName() << endl;
+    else
+        cout << "没有找到ID为" << 3 << "的书" << endl;
+
+    cout << "查找图书  name：离散数学" << endl;
+    tmpbook = s.findbyName("离散数学");
+    if (tmpbook.GetID() != 0)
+        cout << "找到name为离散数学的书，ID：" << tmpbook.GetID() << endl;
+    else
+        cout << "没有找到name为离散数学的书" << endl;
+
+    cout << "输出所有库存图书的信息" << endl;
+    s.printList();
+    cout << "程序运行结束" << endl;
+    return  0;
+}
+```
+总结：有了上一题的基础，这题就好做很多，唯一的问题是vector老师几乎没讲，只好网上搜。
+在这里推荐一下我搜到的vector的介绍博客，个人觉得讲的很清楚易懂
+链接：https://www.cnblogs.com/yskn/p/9053161.html
+vector比动态数组好用很多！可以多多使用。
