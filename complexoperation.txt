@@ -1,0 +1,88 @@
+complexoperation
+#include  <iostream>
+using  namespace  std;
+
+class Complex
+{
+    double real, image;//real表示复数的实部，image表示虚部系数
+public:
+    Complex(double r=0.0, double i=0.0) { real = r; image = i; }//构造函数并且设置默认值
+    Complex operator +(Complex a);//重载+号，因为是成员函数，所以只需一个参数，如果是友元函数就需要两个，依次是加号前的参数类型和加号后的参数类型
+    Complex operator -(Complex a);
+    //如果是友元则应该是friend Complex operator -(Complex a，Complex b);这样的
+    Complex operator +(double a);
+    Complex operator -(double a);
+    void print();
+};
+Complex Complex::operator +(Complex a)
+{//复数相加的实现
+    Complex b;
+    b.real = real + a.real;
+    b.image = image + a.image;
+    return Complex(b.real,b.image);//返回新构造的complex类，下同
+}
+Complex Complex::operator -(Complex a)
+{//复数相减的实现
+    Complex b;
+    b.real = real - a.real;
+    b.image = image - a.image;
+    return Complex(b.real, b.image);//
+}
+Complex Complex::operator+(double a)
+{//复数与浮点型相加的实现
+    Complex b;
+    b.real = real + a;
+    b.image = image;
+    return Complex(b.real, b.image);
+}
+Complex Complex::operator-(double a)
+{//复数与浮点型相减的实现
+    Complex b;
+    b.real = real - a;
+    b.image = image;
+    return Complex(b.real, b.image);
+}
+void Complex::print()//输出当前储存的复数
+{
+    if (image>0)//判断正负
+    {
+        if (image == 1.0)//判断虚部是否为1，不然会影响输出格式
+            cout << real << "+i" << endl;
+        else
+            cout << real << "+" << image << "i" << endl;
+    }
+    else if (image == 0)//虚部为0时只需输出实部即可
+    {
+        cout << real << endl;
+    }
+    else
+    {
+        if (image == -1.0)
+            cout << real << "-i" << endl;
+        else
+            cout << real << image << "i" << endl;
+    }
+}
+int  main()
+{
+    Complex  a(3, 4), b(1, -1), c;
+    c = a + b;
+    cout << "a+b=";
+    c.print();
+    cout << endl;
+    c = a - b;
+    cout << "a-b=";
+    c.print();
+    cout << endl;
+    c = a + 100;
+    cout << "a+100=";
+    c.print();
+    cout << endl;
+    c = a - 2.5;
+    cout << "a-2.5=";
+    c.print();
+    cout << endl;
+
+    return  0;
+}
+```

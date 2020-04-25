@@ -1,0 +1,40 @@
+pointoperation
+#include <iostream>
+using  namespace  std;
+class Point
+{
+	int m_x, m_y;//x，y表示坐标
+public:
+	Point(int x=0, int y=0) { m_x = x; m_y = y; }//构造函数设置默认参数
+	Point& operator ++();//前置++
+	Point operator ++(int);//后置++
+	friend ostream& operator <<(ostream& co, Point p);
+	//cout 是 ostream 类的对象。ostream 类和 cout 都是在头文件 <iostream> 中声明的。ostream 类将<<重载为成员函数，所以<<才能和cout一起使用
+	//这里是友元函数，下面输出的时候才能调用私有成员
+};
+Point& Point::operator++()//前置单目运算符重载函数  用引用是减少临时对象产生，提高前置效率
+{
+	m_x++;
+	m_y++;
+	return *this;//返回当前对象（已经做了加1运算)
+}
+Point Point::operator++(int)
+{//注意形参表中的整形形参
+	Point old = *this;//old记录对象加1之前的值
+	++(*this);//利用之前定义的前置++对当前对象加1
+	return old;//return后old就会消失，如果上面用引用符号会产生内存的非法访问
+}
+ostream& operator<<(ostream& co, Point p)
+{
+	co << "(" << p.m_x << ","<<p.m_y << ")" << endl;//co引用的其实是cout函数，属于iostream库
+	return co;
+}
+int  main()
+{
+	Point  a(1, 3);
+	cout << a;
+	cout << a++;
+	cout << ++a;
+	return  0;
+}
+```
