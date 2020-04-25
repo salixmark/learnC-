@@ -1,0 +1,109 @@
+complexoperationfriend
+#include  <iostream>
+using  namespace  std;
+
+class Complex
+{
+    double real, image;
+public:
+    Complex(double r = 0.0, double i = 0.0) { real = r; image = i; }
+    friend Complex operator +(Complex a,Complex c);
+    friend Complex operator -(Complex a,Complex c);
+    friend Complex operator +(Complex c,double a);
+    friend Complex operator -(Complex c,double a);
+    friend Complex operator -(double a, Complex c);
+    friend Complex operator +(double a, Complex c);
+    void print();
+};
+Complex operator +(Complex a, Complex c)
+{
+    Complex b;
+    b.real = a.real + c.real;
+    b.image = a.image + c.image;
+    return Complex(b.real, b.image);
+}
+Complex operator -(Complex a, Complex c)
+{
+    Complex b;
+    b.real = a.real - c.real;
+    b.image = a.image - c.image;
+    return Complex(b.real, b.image);
+}
+Complex operator+(Complex c, double a)
+{
+    Complex b;
+    b.real = c.real + a;
+    b.image = c.image;
+    return Complex(b.real, b.image);
+}
+Complex operator-(Complex c, double a)
+{
+    Complex b;
+    b.real = c.real - a;
+    b.image = c.image;
+    return Complex(b.real, b.image);
+}
+Complex operator -(double a, Complex c)
+{
+    Complex b;
+    b.real = a-c.real;
+    b.image = c.image;
+    return Complex(b.real, b.image);
+}
+Complex operator +(double a, Complex c)
+{
+    Complex b;
+    b.real = c.real + a;
+    b.image = c.image;
+    return Complex(b.real, b.image);
+}
+void Complex::print()
+{
+    if (image > 0)
+    {
+        if (image == 1.0)
+            cout << "(" << real << ")" << "+i" << endl;
+        else
+            cout << "(" << real << ")" << "+" << "(" << image  << "i" << ")" << endl;
+    }
+    else if (image == 0)
+    {
+        cout << "(" << real << ")" << endl;
+    }
+    else
+    {
+        if (image == -1.0)
+            cout << "(" << real << ")" << "-i" << endl;
+        else
+            cout << "(" << real << ")"<<"+"<< "(" << image << "i" << ")" << endl;
+    }
+}
+    int  main()
+    {
+        Complex  a(3, 4), b(1, -1), c;
+        c = a + b;
+        cout << "a+b=";
+        c.print();
+        cout << endl;
+        c = a - b;
+        cout << "a-b=";
+        c.print();
+        cout << endl;
+        c = a + 100;
+        cout << "a+100=";
+        c.print();
+        cout << endl;
+        c = a - 2.5;
+        cout << "a-2.5=";
+        c.print();
+        cout << endl;
+        c = 100 + a;
+        cout << "100+a=";
+        c.print();
+        cout << endl;
+        c = 2.5 - a;
+        cout << "2.5-a=";
+        c.print();
+        cout << endl;
+        return  0;
+    }
