@@ -1,0 +1,30 @@
+
+
+#include <iostream>
+#include<fstream>
+#include<vector>
+#include <algorithm>
+using namespace std;
+int main()
+{
+    fstream a, b;
+    a.open("a.txt", ios::in);
+    vector<double> data;
+    double x;
+    while (a >> x)
+    {
+        data.push_back(x);
+    }
+    sort(data.begin(), data.end());
+    b.open("b.txt", ios::out);
+    if (b)
+    {
+        for (int i=0;i<data.size(); i++)
+        {
+            b << data[i] << " ";
+        }
+    }
+    a.close();
+    b.close();
+    return 0;
+}
